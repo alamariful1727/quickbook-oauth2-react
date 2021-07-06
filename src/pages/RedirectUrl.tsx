@@ -2,32 +2,34 @@ import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import querystring from 'querystring';
 import axios from 'axios';
+import { JanttApi } from '../config';
 const RedirectUrl = () => {
 	const location = useLocation();
 
-	const params = querystring.decode(location.search.substring(1, location.search.length - 1));
+	const params = querystring.decode(location.search.substring(1, location.search.length));
 
 	const [token, setToken] = useState<{
-		x_refresh_token_expires_in: number;
-		id_token: string;
+		x_refresh_token_expires_in?: number;
+		id_token?: string;
 		access_token: string;
 		refresh_token: string;
-		expires_in: number;
-		token_type: string;
+		expires_in?: number;
+		token_type?: string;
 	}>();
-
-	const [company, setCompany] = useState<any>();
 
 	const handleGetToken = async () => {
 		try {
-			const res = await axios.get('http://localhost:4000/callback' + location.search);
+			// const res = await axios.get('http://localhost:4000/callback' + location.search);
+			const res = await JanttApi.get('/qbo/callback' + location.search);
 			console.log('🚀 handleConnect ~ res', res);
-			setToken(res.data.token);
+			console.log('🚀 handleConnect ~ res.data', res.data);
+			setToken(res.data);
 		} catch (error) {
 			console.log('⚠ handleConnect ~ error.response', error.response);
 		}
 	};
 
+	// TODO: Call proxy API
 	const getCompanyInformation = async () => {
 		try {
 			const res = await axios.get('http://localhost:4000/company/' + params.realmId, {

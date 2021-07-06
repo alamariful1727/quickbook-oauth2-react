@@ -1,10 +1,11 @@
 import React from 'react';
-import axios from 'axios';
+import { JanttApi } from '../config';
 
 const Landing = () => {
 	const handleConnect = async () => {
 		try {
-			const res = await axios.get('http://localhost:4000/authUri');
+			// const res = await axios.get('http://localhost:4000/authUri');
+			const res = await JanttApi.get('/qbo');
 			console.log('🚀 handleConnect ~ res', res);
 
 			// Launch Popup
@@ -12,7 +13,7 @@ const Landing = () => {
 			// parameters += ',left=' + 50 + ',top=' + 50;
 			// window.open(res.data.authUri, 'connectPopup', parameters);
 			// window.open(res.data.authUri, '_blank', parameters);
-			window.location.href = res.data.authUri;
+			window.location.href = res.data.authURL || res.data.authUri;
 		} catch (error) {
 			console.log('⚠ handleConnect ~ error.response', error.response);
 		}
