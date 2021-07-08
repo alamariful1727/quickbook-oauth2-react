@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import querystring from 'querystring';
-import axios from 'axios';
 import { JanttApi } from '../config';
 const RedirectUrl = () => {
 	const location = useLocation();
@@ -19,7 +18,6 @@ const RedirectUrl = () => {
 
 	const handleGetToken = async () => {
 		try {
-			// const res = await axios.get('http://localhost:4000/callback' + location.search);
 			const res = await JanttApi.get('/qbo/callback' + location.search);
 			console.log('🚀 handleConnect ~ res', res);
 			console.log('🚀 handleConnect ~ res.data', res.data);
@@ -29,14 +27,12 @@ const RedirectUrl = () => {
 		}
 	};
 
-	// TODO: Call proxy API
 	const getCompanyInformation = async () => {
 		try {
-			const res = await axios.get('http://localhost:4000/company/' + params.realmId, {
+			const res = await JanttApi.get('/qbo/company/' + params.realmId, {
 				headers: { Authorization: token?.access_token },
 			});
 			console.log('🚀 handleConnect ~ res', res);
-			// setToken(res.data.token);
 		} catch (error) {
 			console.log('⚠ handleConnect ~ error.response', error.response);
 		}
