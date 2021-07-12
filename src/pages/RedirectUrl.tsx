@@ -37,6 +37,28 @@ const RedirectUrl = () => {
 			console.log('⚠ handleConnect ~ error.response', error.response);
 		}
 	};
+	
+	const getVendorInformation = async () => {
+		try {
+			const res = await JanttApi.get('/qbo/expensebyvendor/' + params.realmId, {
+				headers: { Authorization: token?.access_token },
+			});
+			console.log('🚀 handleConnect ~ res', res);
+		} catch (error) {
+			console.log('⚠ handleConnect ~ error.response', error.response);
+		}
+	};
+
+	const getSalesInformation = async () => {
+		try {
+			const res = await JanttApi.get(`/qbo/salesreport/${params.realmId}?date_macro=Last Fiscal Quarter`, {
+				headers: { Authorization: token?.access_token },
+			});
+			console.log('🚀 handleConnect ~ res', res);
+		} catch (error) {
+			console.log('⚠ handleConnect ~ error.response', error.response);
+		}
+	};
 
 	return (
 		<div className='space-y-4 my-8'>
@@ -54,9 +76,19 @@ const RedirectUrl = () => {
 						<p>{JSON.stringify(token, null, 2)}</p>
 					</div>
 					<button
-						className='bg-[#2CA01C] text-white font-semibold rounded-full px-4 py-2'
+						className='bg-[#2CA01C] text-white font-semibold rounded-full px-4 py-2 mr-4'
 						onClick={getCompanyInformation}>
 						Get Company Information
+					</button>
+					<button
+						className='bg-[#2CA01C] text-white font-semibold rounded-full px-4 py-2 mr-4'
+						onClick={getVendorInformation}>
+						Get Vendor Information
+					</button>
+					<button
+						className='bg-[#2CA01C] text-white font-semibold rounded-full px-4 py-2'
+						onClick={getSalesInformation}>
+						Get Sales Information
 					</button>
 				</>
 			)}
